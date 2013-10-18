@@ -42,7 +42,7 @@ class Node(object):
             self.name,
             self.x,
             self.multiplicity,
-            r"\\" + r"\\".join(map(str,self.values))
+            r"\\" + r"\\".join(["f({{{0}}})^{{{1}}} = {{{2}}}".format(self.name,"'"*i, x) for i, x in enumerate(self.values)])
         )
 
 class DivDifference(object):
@@ -212,12 +212,14 @@ def make_tex(testcases, poly, self_name, filename="output.tex"):
     with open(filename, 'w') as outfile:
         outfile.write(tex_start)
         for i, p in enumerate(poly):
+            outfile.write(r"\null\hrulefill\\"+"\n")
+            outfile.write("Полином $H_{{{0}}}$:\\\\\n".format(i+1))
             outfile.write("\nУзлы:\\\\\n")
             for tk in testcases[i]:
-                outfile.write("{0} \\\\\n".format(tk.printTex()))
+                outfile.write("{0} \\\\\\\\\n".format(tk.printTex()))
             parts = [x.printTex() for x in p]
             outfile.write("\n\\begin{gather*}\n")
-            outfile.write("H_{0} = {1}\\\\\n".format(i+1, " + \\\\\n".join(parts)))
+            outfile.write("H_{{{0}}} = {1}\\\\\n".format(i+1, " + \\\\\n".join(parts)))
 
             outfile.write(r"\\")
             #now calculated values
@@ -324,7 +326,7 @@ tex_end = r"""\lstset{{
   extendedchars=\true
 }}
   \includegraphics[]{{/home/rast/aperture/lab_final/figure.png}}
-\code{{Код на python, использованный для вычислений:}}{{./{0}}}
+\code{{Код на python, использованный для вычислений: (\url{{github.com/Rast1234/hermit}})}}{{./{0}}}
 
 \end{{document}}"""
 
