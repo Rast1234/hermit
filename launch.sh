@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
 rm output.*
-python hermit.py
+python2 hermit.py
 pdflatex output.tex
 xdg-open output.pdf

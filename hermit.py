@@ -2,7 +2,7 @@
 
 __author__ = 'rast'
 
-from math import e
+from math import e, factorial
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy
@@ -68,7 +68,7 @@ class DivDifference(object):
             power -= 1
             value = node.values[power]
             #print("value=", value)
-            return value
+            return value / factorial(power)
         else:
             withoutFirst = DivDifference(self.removeFirst())
             withoutLast = DivDifference(self.removeLast())
@@ -134,6 +134,10 @@ class DivDifference(object):
         """f(...)
         """
         seq = self.__generateSequence()
+        if len(self.repeatedNodes) == 1:  # f(...) / factorial(power)
+            pow = self.repeatedNodes[0][1]
+            if pow > 2:
+                return "\\frac{{f({})}}{{{}!}}".format(", ".join(seq), pow-1)
         return "f({})".format(", ".join(seq))
 
     def printExpression(self):
